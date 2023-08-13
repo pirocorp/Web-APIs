@@ -20,7 +20,7 @@
 
             this.ExponentialHttpRetry = Policy
                 .HandleResult<HttpResponseMessage>(res => !res.IsSuccessStatusCode)
-                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(3 * retryAttempt));
+                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
         }
 
         /// <summary>

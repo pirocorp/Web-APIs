@@ -24,12 +24,12 @@
         [Route("{id:int}")]
         public async Task<ActionResult> MakeRequest(int id)
         {
-            HttpClient client = new HttpClient();
+            // HttpClient client = new HttpClient();
 
-            //var response = await client.GetAsync($"https://localhost:7215/api/Response/{id}");
+            // var response = await client.GetAsync($"https://localhost:7215/api/Response/{id}");
 
-            var response = await this.clientPolicy.LinearHttpRetry.ExecuteAsync(
-                () => client.GetAsync($"https://localhost:7215/api/Response/{id}"));
+            // var response = await this.clientPolicy.ExponentialHttpRetry.ExecuteAsync(
+            //    () => client.GetAsync($"https://localhost:7215/api/Response/{id}"));
 
             if (response.IsSuccessStatusCode)
             {
