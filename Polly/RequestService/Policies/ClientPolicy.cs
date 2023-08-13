@@ -13,11 +13,23 @@
             this.ImmediateHttpRetry = Policy
                 .HandleResult<HttpResponseMessage>(res => !res.IsSuccessStatusCode)
                 .RetryAsync(5);
+
+            this.LinearHttpRetry = Policy
+                .HandleResult<HttpResponseMessage>(res => !res.IsSuccessStatusCode)
+                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(3));
+
+            this.ExponentialHttpRetry = Policy
+                .HandleResult<HttpResponseMessage>(res => !res.IsSuccessStatusCode)
+                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(3 * retryAttempt));
         }
 
         /// <summary>
         /// Retry immediately 5x times
         /// </summary>
         public AsyncRetryPolicy<HttpResponseMessage> ImmediateHttpRetry { get; }
+
+        public AsyncRetryPolicy<HttpResponseMessage> LinearHttpRetry { get; }
+
+        public AsyncRetryPolicy<HttpResponseMessage> ExponentialHttpRetry { get; }
     }
 }

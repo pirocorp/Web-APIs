@@ -1,6 +1,7 @@
 ﻿namespace RequestService.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+
     using RequestService.Policies;
 
     [ApiController]
@@ -27,7 +28,7 @@
 
             //var response = await client.GetAsync($"https://localhost:7215/api/Response/{id}");
 
-            var response = await this.clientPolicy.ImmediateHttpRetry.ExecuteAsync(
+            var response = await this.clientPolicy.LinearHttpRetry.ExecuteAsync(
                 () => client.GetAsync($"https://localhost:7215/api/Response/{id}"));
 
             if (response.IsSuccessStatusCode)
