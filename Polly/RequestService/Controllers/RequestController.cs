@@ -2,20 +2,14 @@
 {
     using Microsoft.AspNetCore.Mvc;
 
-    using RequestService.Policies;
-
     [ApiController]
     [Route("api/[Controller]")]
     public class RequestController : ControllerBase
     {
-        private readonly ClientPolicy clientPolicy;
         private readonly IHttpClientFactory clientFactory;
 
-        public RequestController(
-            ClientPolicy clientPolicy, 
-            IHttpClientFactory clientFactory)
+        public RequestController(IHttpClientFactory clientFactory)
         {
-            this.clientPolicy = clientPolicy;
             this.clientFactory = clientFactory;
         }
 
@@ -28,9 +22,8 @@
         [Route("{id:int}")]
         public async Task<ActionResult> MakeRequest(int id)
         {
-            // HttpClient client = new HttpClient();
-
-            // var response = await client.GetAsync($"https://localhost:7215/api/Response/{id}");
+            var client = this.clientFactory.CreateClient("Request Client");
+            var response = await client.GetAsync($"https://localhost:7215/api/Response/{id}");
 
             // var response = await this.clientPolicy.LinearHttpRetry.ExecuteAsync(
             //    () => client.GetAsync($"https://localhost:7215/api/Response/{id}"));
@@ -38,9 +31,8 @@
             // var response = await this.clientPolicy.ExponentialHttpRetry.ExecuteAsync(
             //    () => client.GetAsync($"https://localhost:7215/api/Response/{id}"));
 
-            var client = this.clientFactory.CreateClient();
-            var response = await this.clientPolicy.ImmediateHttpRetry.ExecuteAsync(
-                () => client.GetAsync($"https://localhost:7215/api/Response/{id}"));
+            //var response = await this.clientPolicy.ImmediateHttpRetry.ExecuteAsync(
+            //    () => client.GetAsync($"https://localhost:7215/api/Response/{id}"));
 
             if (response.IsSuccessStatusCode)
             {
