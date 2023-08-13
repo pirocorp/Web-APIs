@@ -26,4 +26,4 @@ The example will be **retry policy** configuring the number of retries and the i
   - Policy 2 - Retry 5x times and wait 3s between retries
   - Policy 3 - Retry 5x with exponential backoff 
 
-package: ```Microsoft.Extensions.Http.Polly```
+NuGet package: ```Microsoft.Extensions.Http.Polly```
