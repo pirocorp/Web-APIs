@@ -12,8 +12,8 @@
         /// <param name="id">The id of the response</param>
         /// <returns>Response</returns>
         [HttpGet]
-        [Route("id:int")]
-        public async Task<ActionResult> GetResponse(int id)
+        [Route("{id:int}")]
+        public async Task<ActionResult> GetResponse([FromRoute]int id)
         {
             Random random = new Random();
             var randomInteger = random.Next(1, 101);
