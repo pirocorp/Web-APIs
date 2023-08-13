@@ -24,7 +24,7 @@
                 return await Task.FromResult(this.StatusCode(StatusCodes.Status500InternalServerError));
             }
 
-            Console.WriteLine("--> Failure - Generate a HTTP 200 <--");
+            Console.WriteLine("--> Success - Generate a HTTP 200 <--");
             return await Task.FromResult(this.Ok());
         }
     }
