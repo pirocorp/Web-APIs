@@ -10,16 +10,18 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  setup:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
     - name: Restore dependencies
       working-directory: /home/runner/work/Web-APIs/Web-APIs/Polly/
       run: dotnet restore
