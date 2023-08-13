@@ -18,7 +18,7 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-  build:
+  Polly:
     needs: setup
     runs-on: ubuntu-latest
     steps:
