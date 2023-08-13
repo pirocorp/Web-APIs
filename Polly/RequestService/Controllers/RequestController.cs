@@ -1,11 +1,19 @@
 ﻿namespace RequestService.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using RequestService.Policies;
 
     [ApiController]
     [Route("api/[Controller]")]
     public class RequestController : ControllerBase
     {
+        private readonly ClientPolicy clientPolicy;
+
+        public RequestController(ClientPolicy clientPolicy)
+        {
+            this.clientPolicy = clientPolicy;
+        }
+
         /// <summary>
         /// Makes request to Response Service Response Controller with a given id
         /// </summary>
@@ -17,7 +25,10 @@
         {
             HttpClient client = new HttpClient();
 
-            var response = await client.GetAsync($"https://localhost:7215/api/Response/{id}");
+            //var response = await client.GetAsync($"https://localhost:7215/api/Response/{id}");
+
+            var response = await this.clientPolicy.ImmediateHttpRetry.ExecuteAsync(
+                () => client.GetAsync($"https://localhost:7215/api/Response/{id}"));
 
             if (response.IsSuccessStatusCode)
             {
