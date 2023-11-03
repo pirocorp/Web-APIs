@@ -2,9 +2,14 @@
 
 ## What is GraphQL
 
-## GraphQL vs REST
+- GraphQL is a query and manipulation language for APIs
+- GraphQL is also the runtime for fulfilling requests
+- Created at Facebook to address both over and under-fetching
+- Open Source - hosted by Linux Foundation
 
 ## Core Concepts
+
+## GraphQL vs REST
  
 ## GraphQL with .NET
 
