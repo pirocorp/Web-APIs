@@ -69,6 +69,8 @@ Resolvers - A resolver returns data for a given field.
 
 ### Project Setup
 
+
+
 ### Model and DbContext
 
 ### Simple Quering
