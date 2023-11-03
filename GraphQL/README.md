@@ -20,10 +20,16 @@
 
 **Types** - anything in GraphQL can be a Type
  - Queries
-   - 
  - Mutations
  - Subscriptions
  - Objects
+   - ```graphql
+     type: Car{
+       id: ID!
+       make: String!
+       model: String!
+     }
+     ```
  - Enumerations
  - Scalar
    - Id
