@@ -16,6 +16,7 @@
   - Descriptions and/or documentation for the schema
 - **Self-documenting**
 - Comprised of **Types**
+- Must have a **Root Query Type**
 
 ## GraphQL vs REST
  
