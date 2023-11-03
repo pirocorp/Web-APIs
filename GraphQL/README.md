@@ -23,7 +23,7 @@
  - Mutations
  - Subscriptions
  - Objects
-   - Schema definition language of GraphQL
+   - Schema definition language of GraphQL. Defining an object of type **Car**. Exclamation marks means it cannot be null
      ```graphql
      type: Car{
        id: ID!
