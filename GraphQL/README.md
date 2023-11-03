@@ -13,7 +13,7 @@
 - The **Queries** you can perform
 - The **Objects** it contains
 - The **Data Types** that it has
-- Descriptions and/or documentation for the schema
+- Descriptions and documentation for the schema
 - **Self-documenting**
 - Comprised of **Types**
 - Must have a **Root Query Type**
@@ -44,6 +44,17 @@ Resolvers - A resolver returns data for a given field.
 ![image](https://github.com/pirocorp/Web-APIs/assets/34960418/182f90ab-365c-4ad7-b987-e017f773441e)
 
 ## GraphQL vs REST
+
+- REST over-fetches: returning more data than you need
+- REST under-fetches: you need to make multiple requests
+
+| REST                               	| GraphQL                  	|
+|------------------------------------	|--------------------------	|
+| Non-interactive (system to system) 	| Interactive/real-time  	|
+| Microservices                      	| Mobile applications      	|
+| Simple Object Hierarchy            	| Complex Object Hierarchy 	|
+| Repeated, simple queries           	| Complex Queries          	|
+| Simple to create                   	| Much harder to create    	|
  
 ## GraphQL with .NET
 
