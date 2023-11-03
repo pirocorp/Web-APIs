@@ -79,6 +79,8 @@ Add the following Nuget dependencies:
 
 ### Model and DbContext
 
+
+
 ### Simple Quering
 
 ### Revisit DbContext

@@ -30,3 +30,17 @@ jobs:
     - name: Test
       working-directory: /home/runner/work/Web-APIs/Web-APIs/Polly/
       run: dotnet test --no-build --verbosity normal
+  GraphQL:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Restore dependencies
+      working-directory: /home/runner/work/Web-APIs/Web-APIs/GraphQL/
+      run: dotnet restore
+    - name: Build
+      working-directory: /home/runner/work/Web-APIs/Web-APIs/GraphQL/
+      run: dotnet build --no-restore
+    - name: Test
+      working-directory: /home/runner/work/Web-APIs/Web-APIs/GraphQL/
+      run: dotnet test --no-build --verbosity normal
