@@ -40,6 +40,8 @@ type: Car{
 }
 ```
 
+Resolvers - A resolver returns data for a given field.
+
 ## GraphQL vs REST
  
 ## GraphQL with .NET
