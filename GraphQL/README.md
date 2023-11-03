@@ -18,6 +18,20 @@
 - Comprised of **Types**
 - Must have a **Root Query Type**
 
+**Types** - anything in GraphQL can be a Type
+ - Queries
+   - 
+ - Mutations
+ - Subscriptions
+ - Objects
+ - Enumerations
+ - Scalar
+   - Id
+   - Int
+   - String
+   - Boolean
+   - Float
+
 ## GraphQL vs REST
  
 ## GraphQL with .NET
