@@ -39,8 +39,9 @@ type: Car{
   model: String!
 }
 ```
-
 Resolvers - A resolver returns data for a given field.
+
+![image](https://github.com/pirocorp/Web-APIs/assets/34960418/182f90ab-365c-4ad7-b987-e017f773441e)
 
 ## GraphQL vs REST
  
