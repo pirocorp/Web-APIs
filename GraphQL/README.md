@@ -69,7 +69,13 @@ Resolvers - A resolver returns data for a given field.
 
 ### Project Setup
 
+Add the following Nuget dependencies:
 
+- GraphQL.Server.Ui.Voyager
+- HotChocolate.AspNetCore
+- HotChocolate.Data.EntityFramework
+- Microsoft.EntityFrameworkCore.SqlServer
+- Microsoft.EntityFrameworkCore.Tools
 
 ### Model and DbContext
 
