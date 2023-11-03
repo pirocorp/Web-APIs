@@ -23,7 +23,8 @@
  - Mutations
  - Subscriptions
  - Objects
-   - ```graphql
+   - Schema definition language of GraphQL
+     ```graphql
      type: Car{
        id: ID!
        make: String!
