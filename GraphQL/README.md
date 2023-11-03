@@ -9,11 +9,11 @@
 
 ## Core Concepts
 
-- **Schema** - describes the API in full
-  - The **Queries** you can perform
-  - The **Objects** it contains
-  - The **Data Types** that it has
-  - Descriptions and/or documentation for the schema
+**Schema** - describes the API in full
+- The **Queries** you can perform
+- The **Objects** it contains
+- The **Data Types** that it has
+- Descriptions and/or documentation for the schema
 - **Self-documenting**
 - Comprised of **Types**
 - Must have a **Root Query Type**
