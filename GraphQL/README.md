@@ -5,10 +5,13 @@
 ## GraphQL vs REST
 
 ## Core Concepts
-
+ 
 ## GraphQL with .NET
 
-## Demo Application Architecture
+## Demo Application Architecture 
+
+![image](https://github.com/pirocorp/Web-APIs/assets/34960418/abe0508d-21c8-4c86-ba5c-ab51bbbeb7f5)
+
 
 ## Codding
 
@@ -32,6 +35,8 @@
 
 ### Subscriptions
 
+## Next Steps
 
+## Wrap Up
 
 
