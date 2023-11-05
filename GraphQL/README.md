@@ -119,6 +119,14 @@ public class Platform
 
 ### Simple Quering
 
+```csharp
+public class Query
+{
+    public IQueryable<Platform> GetPlatform([Service] GraphQlDbContext context)
+        => context.Platforms;
+}
+```
+
 ### Revisit DbContext
 
 ### Multi-Model
