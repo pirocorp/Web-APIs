@@ -136,7 +136,7 @@ public class Query
 }
 ```
 
-### Resolver injection of a DbContext
+### Resolver injection of a DbContext ([Pooled](https://chillicream.com/docs/hotchocolate/v13/integrations/entity-framework))
 
 ```csharp
 public class Query
