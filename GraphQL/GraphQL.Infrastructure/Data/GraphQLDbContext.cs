@@ -1,6 +1,7 @@
 ﻿namespace GraphQL.Infrastructure.Data;
 
-using GraphQL.Domain.Models;
+using Domain.Models;
+
 using Microsoft.EntityFrameworkCore;
 
 public class GraphQlDbContext : DbContext

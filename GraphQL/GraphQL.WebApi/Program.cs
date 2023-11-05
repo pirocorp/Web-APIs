@@ -1,14 +1,18 @@
 namespace GraphQL.WebApi;
 
 using System.Threading.Tasks;
+
 using GraphQL.Domain;
 using GraphQL.Infrastructure;
+using GraphQL.Server.Ui.Voyager;
 using GraphQL.WebApi.Exceptions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using static Infrastructure.Common.InfrastructureConstants;
 
 public class Program
 {
@@ -52,6 +56,13 @@ public class Program
 
     private static void ConfigureEndpoints(IEndpointRouteBuilder app)
     {
-        app.MapGet("/", () => "Hello World!");
+        app.MapGraphQL(GRAPH_QL_ENDPOINT);
+
+        app.MapGraphQLVoyager(
+            VOYAGER_ENDPOINT,
+            new VoyagerOptions()
+            {
+                GraphQLEndPoint = GRAPH_QL_ENDPOINT
+            });
     }
 }

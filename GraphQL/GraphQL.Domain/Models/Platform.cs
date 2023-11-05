@@ -1,6 +1,7 @@
 ﻿namespace GraphQL.Domain.Models;
 
 using System;
+
 using GraphQL.Domain.Common;
 using GraphQL.Domain.Exceptions;
 
@@ -14,7 +15,7 @@ public class Platform
 
     internal Platform(string name, string? licenseKey)
     {
-        this.Validate(name);
+        Validate(name);
 
         this.Id = Guid.NewGuid();
         this.Name = name;
@@ -29,13 +30,13 @@ public class Platform
 
     public void ChangeName(string name)
     {
-        this.Validate(name);
+        Validate(name);
 
         this.Name = name;
     }
 
-    private void Validate(string name)
+    private static void Validate(string name)
     {
-        Guard.AgainstEmptyString<InvalidPlatformException>(name, nameof(this.Name));
+        Guard.AgainstEmptyString<InvalidPlatformException>(name, nameof(Name));
     }
 }
