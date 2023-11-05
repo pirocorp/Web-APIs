@@ -141,20 +141,33 @@ public class Query
 ```csharp
 public class Query
 {
-    public IQueryable<Platform> GetPlatform([Service(ServiceKind.Synchronized)] GraphQlDbContext context)
+    public IQueryable<Platform> GetPlatform(GraphQlDbContext context) // Method injection supported by the HotChocolate
         => context.Platforms;
 }
 ```
 
 ```csharp
  serviceCollection
-     .AddDbContext<GraphQlDbContext>(options => options.UseSqlServer(
+     .AddPooledDbContextFactory<GraphQlDbContext>(options => options.UseSqlServer(
          configuration.GetConnectionString(DEFAULT_CONNECTION),
          b => b.MigrationsAssembly(typeof(GraphQlDbContext).Assembly.FullName)));
 
+// The Hot Chocolate Resolver Compiler will then take care of correctly injecting your scoped DbContext instance
+// into your resolvers and also ensure that the resolvers using it are never run in parallel.
+
+// You can also specify a DbContextKind as an argument to the RegisterDbContext<T> method,
+// to change how the DbContext should be injected.
+
+// DbContextKind.Pooled
+// This injection mechanism will require your DbContext to be registered as a pooled IDbContextFactory<T>.
+
+// When injecting a DbContext using the DbContextKind.Pool, Hot Chocolate will retrieve one DbContext
+// instance from the pool for each invocation of a resolver. Once the resolver has finished executing,
+// the instance will be returned to the pool.
+
  serviceCollection
      .AddGraphQLServer()
-     .RegisterDbContext<GraphQlDbContext>()
+     .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
      .AddQueryType<Query>();
 ```
 
