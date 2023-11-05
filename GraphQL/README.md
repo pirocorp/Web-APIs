@@ -79,7 +79,43 @@ Add the following Nuget dependencies:
 
 ### Model and DbContext
 
+```csharp
+public class Platform
+{
+    private Platform() // Used by EF Core
+    {
+        this.Name = string.Empty;
+        this.LicenseKey = string.Empty;
+    }
 
+    internal Platform(string name, string? licenseKey)
+    {
+        this.Validate(name);
+
+        this.Id = Guid.NewGuid();
+        this.Name = name;
+        this.LicenseKey = licenseKey;
+    }
+
+    public Guid Id { get; private set; }
+
+    public string Name { get; private set; }
+
+    public string? LicenseKey { get; private set; }
+
+    public void ChangeName(string name)
+    {
+        this.Validate(name);
+
+        this.Name = name;
+    }
+
+    private void Validate(string name)
+    {
+        Guard.AgainstEmptyString<InvalidPlatformException>(name, nameof(this.Name));
+    }
+}
+```
 
 ### Simple Quering
 
