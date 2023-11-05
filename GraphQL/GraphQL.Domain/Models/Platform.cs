@@ -1,7 +1,6 @@
 ﻿namespace GraphQL.Domain.Models;
 
 using System;
-
 using GraphQL.Domain.Common;
 using GraphQL.Domain.Exceptions;
 
@@ -24,9 +23,16 @@ public class Platform
 
     public Guid Id { get; private set; }
 
-    public string Name { get; private init; }
+    public string Name { get; private set; }
 
     public string? LicenseKey { get; private set; }
+
+    public void ChangeName(string name)
+    {
+        this.Validate(name);
+
+        this.Name = name;
+    }
 
     private void Validate(string name)
     {

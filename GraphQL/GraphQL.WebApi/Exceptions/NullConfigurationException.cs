@@ -1,4 +1,4 @@
-﻿namespace GraphQL.Exceptions;
+﻿namespace GraphQL.WebApi.Exceptions;
 
 using System;
 

@@ -1,9 +1,9 @@
-namespace GraphQL;
+namespace GraphQL.WebApi;
 
 using System.Threading.Tasks;
 using GraphQL.Domain;
-using GraphQL.Exceptions;
 using GraphQL.Infrastructure;
+using GraphQL.WebApi.Exceptions;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;

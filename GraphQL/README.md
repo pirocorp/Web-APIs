@@ -101,4 +101,10 @@ Add the following Nuget dependencies:
 
 ## Wrap Up
 
+## Helpers
 
+While in `GraphQL.Infrastructure` project use this type of command to work with migrations
+
+```bash
+dotnet ef --startup-project ..\GraphQL.WebApi\ migrations list
+```

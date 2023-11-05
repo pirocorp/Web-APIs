@@ -1,6 +1,6 @@
-﻿using GraphQL.Infrastructure.Data;
+﻿namespace GraphQL.Infrastructure;
 
-namespace GraphQL.Infrastructure;
+using GraphQL.Infrastructure.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
