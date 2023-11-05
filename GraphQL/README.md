@@ -119,6 +119,15 @@ public class Platform
 
 ### Simple Quering
 
+```graphql
+query{
+    platform{
+        id,
+        name
+    }
+}
+```
+
 ```csharp
 public class Query
 {
