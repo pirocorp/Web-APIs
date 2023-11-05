@@ -136,7 +136,28 @@ public class Query
 }
 ```
 
-### Revisit DbContext
+### Resolver injection of a DbContext
+
+```csharp
+public class Query
+{
+    public IQueryable<Platform> GetPlatform([Service(ServiceKind.Synchronized)] GraphQlDbContext context)
+        => context.Platforms;
+}
+```
+
+```csharp
+ serviceCollection
+     .AddDbContext<GraphQlDbContext>(options => options.UseSqlServer(
+         configuration.GetConnectionString(DEFAULT_CONNECTION),
+         b => b.MigrationsAssembly(typeof(GraphQlDbContext).Assembly.FullName)));
+
+ serviceCollection
+     .AddGraphQLServer()
+     .RegisterDbContext<GraphQlDbContext>()
+     .AddQueryType<Query>();
+```
+
 
 ### Multi-Model
 
