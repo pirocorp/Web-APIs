@@ -80,8 +80,63 @@ Add the following Nuget dependencies:
 ### Model and DbContext
 
 ```csharp
-public class Platform
+public abstract class Entity<TId> where TId : struct
 {
+    public TId Id { get; protected set; } = default;
+
+    public override bool Equals(object? obj)
+    {
+        // base is derived = true
+        if (obj is not Entity<TId> other)
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(this, other))
+        {
+            return true;
+        }
+
+        // base != derived
+        if (this.GetType() != other.GetType())
+        {
+            return false;
+        }
+
+        // If only one object from both has a default id, they are not equal.
+        if (this.Id.Equals(default(TId)) || other.Id.Equals(default(TId)))
+        {
+            return false;
+        }
+
+        return this.Id.Equals(other.Id);
+    }
+
+    public static bool operator ==(Entity<TId>? first, Entity<TId>? second)
+    {
+        if (first is null && second is null)
+        {
+            return true;
+        }
+
+        if (first is null || second is null)
+        {
+            return false;
+        }
+
+        return first.Equals(second);
+    }
+
+    public static bool operator !=(Entity<TId>? first, Entity<TId>? second) => !(first == second);
+
+    // ReSharper disable once NonReadonlyMemberInGetHashCode
+    public override int GetHashCode() => HashCode.Combine(this.GetType().ToString(), this.Id);
+}
+
+public class Platform : Entity<Guid>
+{
+    private readonly HashSet<Command> commands = new HashSet<Command>();
+
     private Platform() // Used by EF Core
     {
         this.Name = string.Empty;
@@ -90,29 +145,86 @@ public class Platform
 
     internal Platform(string name, string? licenseKey)
     {
-        this.Validate(name);
+        Validate(name);
 
         this.Id = Guid.NewGuid();
         this.Name = name;
         this.LicenseKey = licenseKey;
     }
 
-    public Guid Id { get; private set; }
-
     public string Name { get; private set; }
 
     public string? LicenseKey { get; private set; }
 
+    public IReadOnlyCollection<Command> Commands => this.commands.ToList().AsReadOnly();
+
     public void ChangeName(string name)
     {
-        this.Validate(name);
+        Validate(name);
 
         this.Name = name;
     }
 
-    private void Validate(string name)
+    public void AddCommand(Command command)
     {
-        Guard.AgainstEmptyString<InvalidPlatformException>(name, nameof(this.Name));
+        this.commands.Add(command);
+    }
+
+    private static void Validate(string name)
+    {
+        Guard.AgainstEmptyString<InvalidPlatformException>(name, nameof(Name));
+    }
+}
+
+public class Command : Entity<Guid>
+{
+    private Command() // Used by EF Core
+    {
+        this.CommandLine = string.Empty;
+        this.Description = string.Empty;
+        this.Platform =  default!;
+    }
+
+    internal Command(string description, string commandLine, Platform platform)
+    {
+        this.Id = Guid.NewGuid();
+
+        Validate(description, commandLine);
+
+        this.Description = description;
+        this.CommandLine = commandLine;
+        this.Platform = platform;
+    }
+
+    public string CommandLine { get; private set; }
+
+    public string Description { get; private set; }
+
+    public Platform Platform { get; private set; }
+
+    public void ChangeCommand(string command)
+    {
+        Guard.AgainstEmptyString<InvalidCommandException>(command, nameof(this.CommandLine));
+
+        this.CommandLine = command;
+    }
+
+    public void UpdateDescription(string description)
+    {
+        Guard.AgainstEmptyString<InvalidCommandException>(description, nameof(this.Description));
+
+        this.Description = description;
+    }
+
+    public void SwitchPlatform(Platform platform)
+    {
+        this.Platform = platform;
+    }
+
+    private static void Validate(string description, string commandLine)
+    {
+        Guard.AgainstEmptyString<InvalidCommandException>(description, nameof(Description));
+        Guard.AgainstEmptyString<InvalidCommandException>(commandLine, nameof(CommandLine));
     }
 }
 ```
@@ -170,11 +282,6 @@ public class Query
      .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
      .AddQueryType<Query>();
 ```
-
-
-### Multi-Model
-
-### Annotation vs Code First
 
 ### Introducing Types
 
