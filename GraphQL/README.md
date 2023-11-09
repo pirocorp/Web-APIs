@@ -77,7 +77,7 @@ Add the following Nuget dependencies:
 - Microsoft.EntityFrameworkCore.SqlServer
 - Microsoft.EntityFrameworkCore.Tools
 
-### Model and DbContext
+### Domain Model and DbContext
 
 ```csharp
 public abstract class Entity<TId> where TId : struct
