@@ -12,6 +12,8 @@ public class GraphQlDbContext : DbContext
 
     public DbSet<Platform> Platforms => this.Set<Platform>();
 
+    public DbSet<Command> Commands => this.Set<Command>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

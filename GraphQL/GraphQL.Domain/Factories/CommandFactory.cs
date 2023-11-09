@@ -9,7 +9,7 @@ public class CommandFactory : ICommandFactory
     private Platform commandPlatform = default!;
 
     public Command Build()
-        => this.Build(this.commandDescription, this.commandExpression, this.commandPlatform;
+        => this.Build(this.commandDescription, this.commandExpression, this.commandPlatform);
 
     public Command Build(string description, string commandLine, Platform platform)
         => this

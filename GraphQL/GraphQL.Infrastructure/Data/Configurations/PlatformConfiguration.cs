@@ -20,6 +20,7 @@ public class PlatformConfiguration : IEntityTypeConfiguration<Platform>
         builder
             .HasMany(p => p.Commands)
             .WithOne(c => c.Platform)
+            .OnDelete(DeleteBehavior.Restrict)
             .Metadata
             .PrincipalToDependent // Configures Platform to be principal of the relation e.g. Command to have PlatformId as Foreign Key
             // If the Foreign Key filed was in Platform should use DependentToPrincipal
