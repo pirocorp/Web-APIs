@@ -9,6 +9,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection RegisterDomainServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddTransient<IPlatformFactory, PlatformFactory>();
+        serviceCollection.AddTransient<ICommandFactory, CommandFactory>();
 
         return serviceCollection;
     }

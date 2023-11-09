@@ -1,6 +1,7 @@
 ﻿namespace GraphQL.Infrastructure;
 
 using HotChocolate.Data;
+
 using Infrastructure.GraphQL;
 using Infrastructure.Data;
 
