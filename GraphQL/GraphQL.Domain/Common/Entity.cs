@@ -2,10 +2,24 @@
 
 using System;
 
+/// <summary>
+/// Domain entity base class.
+/// <remarks>
+/// All domain entities should inherit from this class
+/// </remarks>
+/// </summary>
+/// <typeparam name="TId"></typeparam>
 public abstract class Entity<TId> where TId : struct
 {
+    /// <summary>
+    /// The identity of the domain entity
+    /// </summary>
     public TId Id { get; protected set; } = default;
 
+    /// <summary>
+    /// Equality compare the current object with another object
+    /// </summary>
+    /// <param name="obj">The other object</param>
     public override bool Equals(object? obj)
     {
         // base is derived = true
@@ -34,6 +48,11 @@ public abstract class Entity<TId> where TId : struct
         return this.Id.Equals(other.Id);
     }
 
+    /// <summary>
+    /// Compare if two object are equal
+    /// </summary>
+    /// <param name="first">The first object</param>
+    /// <param name="second">The second object</param>
     public static bool operator ==(Entity<TId>? first, Entity<TId>? second)
     {
         if (first is null && second is null)
@@ -49,8 +68,14 @@ public abstract class Entity<TId> where TId : struct
         return first.Equals(second);
     }
 
+    /// <summary>
+    /// Compare if two object are NOT equal
+    /// </summary>
+    /// <param name="first">The first object</param>
+    /// <param name="second">The second object</param>
     public static bool operator !=(Entity<TId>? first, Entity<TId>? second) => !(first == second);
 
+    /// <inheritdoc />
     // ReSharper disable once NonReadonlyMemberInGetHashCode
     public override int GetHashCode() => HashCode.Combine(this.GetType().ToString(), this.Id);
 }

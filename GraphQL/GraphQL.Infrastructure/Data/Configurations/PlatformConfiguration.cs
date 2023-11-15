@@ -5,25 +5,21 @@ using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+/// <inheritdoc />
 public class PlatformConfiguration : IEntityTypeConfiguration<Platform>
 {
-    public void Configure(EntityTypeBuilder<Platform> builder)
+    /// <inheritdoc />
+    public void Configure(EntityTypeBuilder<Platform> platform)
     {
-        builder.HasKey(x => x.Id);
+        platform.HasKey(x => x.Id);
 
-        builder
+        platform
             .Property(x => x.Name)
             .IsRequired();
 
-        // Because the Commands collection is read-only, we need to explicitly tell
-        // Entity Framework Core to use the private field by providing its name ("commands").
-        builder
+        platform
             .HasMany(p => p.Commands)
             .WithOne(c => c.Platform)
-            .OnDelete(DeleteBehavior.Restrict)
-            .Metadata
-            .PrincipalToDependent // Configures Platform to be principal of the relation e.g. Command to have PlatformId as Foreign Key
-            // If the Foreign Key filed was in Platform should use DependentToPrincipal
-            ?.SetField("commands"); // Sets commands filed on Dealer Entity
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

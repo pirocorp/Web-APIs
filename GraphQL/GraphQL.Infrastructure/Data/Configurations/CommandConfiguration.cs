@@ -5,8 +5,10 @@ using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+/// <inheritdoc />
 public class CommandConfiguration : IEntityTypeConfiguration<Command>
 {
+    /// <inheritdoc />
     public void Configure(EntityTypeBuilder<Command> builder)
     {
         builder.HasKey(x => x.Id);

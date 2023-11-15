@@ -5,6 +5,9 @@ using System;
 using GraphQL.Domain.Common;
 using GraphQL.Domain.Exceptions;
 
+/// <summary>
+/// Command that can be executed on a given platform
+/// </summary>
 public class Command : Entity<Guid>
 {
     private Command() // Used by EF Core
@@ -25,12 +28,25 @@ public class Command : Entity<Guid>
         this.Platform = platform;
     }
 
+    /// <summary>
+    /// The command itself
+    /// </summary>
     public string CommandLine { get; private set; }
 
+    /// <summary>
+    /// Description of the command
+    /// </summary>
     public string Description { get; private set; }
 
+    /// <summary>
+    /// Platform on which command can be executed
+    /// </summary>
     public Platform Platform { get; private set; }
 
+    /// <summary>
+    /// Change the command line
+    /// </summary>
+    /// <param name="command">The new command line</param>
     public void ChangeCommand(string command)
     {
         Guard.AgainstEmptyString<InvalidCommandException>(command, nameof(this.CommandLine));
@@ -38,6 +54,10 @@ public class Command : Entity<Guid>
         this.CommandLine = command;
     }
 
+    /// <summary>
+    /// Change the description of the command
+    /// </summary>
+    /// <param name="description"></param>
     public void UpdateDescription(string description)
     {
         Guard.AgainstEmptyString<InvalidCommandException>(description, nameof(this.Description));
@@ -45,6 +65,10 @@ public class Command : Entity<Guid>
         this.Description = description;
     }
 
+    /// <summary>
+    /// Move command to the new platform
+    /// </summary>
+    /// <param name="platform"></param>
     public void SwitchPlatform(Platform platform)
     {
         this.Platform = platform;

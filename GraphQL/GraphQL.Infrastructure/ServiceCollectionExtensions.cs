@@ -11,8 +11,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 using static Common.InfrastructureConstants;
 
+/// <summary>
+/// Service Collection Extension Methods
+/// </summary>
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Register Domain Services in Service Collection
+    /// </summary>
+    /// <param name="serviceCollection">Service Collection</param>
+    /// <param name="configuration">Application Configuration</param>
+    /// <returns>Service Collection</returns>
     public static IServiceCollection RegisterInfrastructureServices(
         this IServiceCollection serviceCollection, 
         IConfiguration configuration)
@@ -24,12 +33,12 @@ public static class ServiceCollectionExtensions
 
         serviceCollection
             .AddGraphQLServer()
-
             // The Hot Chocolate Resolver Compiler will then take care of correctly injecting your scoped DbContext instance
             // into your resolvers and also ensuring that the resolvers using it are never run in parallel.
             .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)  // You can also specify a DbContextKind as argument to the RegisterDbContext<T> method,
                                                                         // to change how the DbContext should be injected.
-            .AddQueryType<Query>();
+            .AddQueryType<Query>()
+            .AddProjections();
 
         return serviceCollection;
     }

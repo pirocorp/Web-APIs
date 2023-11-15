@@ -14,10 +14,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 using static Infrastructure.Common.InfrastructureConstants;
 
+/// <summary>
+/// The application entry Point class
+/// </summary>
 public class Program
 {
     private static IConfiguration? configuration;
 
+    /// <summary>
+    /// The application entry point
+    /// </summary>
     public static Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +39,9 @@ public class Program
         return app.RunAsync();
     }
 
+    /// <summary>
+    /// Application Configuration Object
+    /// </summary>
     public static IConfiguration Configuration
     {
         get => configuration ?? throw new NullConfigurationException();

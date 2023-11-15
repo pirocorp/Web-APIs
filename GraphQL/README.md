@@ -1,5 +1,11 @@
 # Graph QL
 
+## Endpoints
+
+- GraphQL endpoint: 
+- 
+- Schema Visualization: https://localhost:7243/ui/voyager
+
 ## What is GraphQL
 
 - GraphQL is a query and manipulation language for APIs
@@ -253,8 +259,13 @@ public class Query
 ```csharp
 public class Query
 {
+    [UseProjection]
     public IQueryable<Platform> GetPlatform(GraphQlDbContext context) // Method injection supported by the HotChocolate
         => context.Platforms;
+
+    [UseProjection]
+    public IQueryable<Command> GetCommand(GraphQlDbContext context)
+        => context.Commands;
 }
 ```
 
@@ -294,6 +305,70 @@ public class Query
 ## Next Steps
 
 ## Wrap Up
+
+## Queries
+
+### Get Platforms Query
+
+```graphql
+query{
+  platform{
+    id,
+    name
+  }
+}
+```
+
+### Get Platforms Paralel Query
+
+```graphql
+query{
+    a:platform{
+        id,
+        name
+    }
+    b:platform{
+        id,
+        name
+    }
+    c:platform{
+        id,
+        name
+    }
+}
+```
+
+### Get Platforms and Commands Query
+
+```graphql
+query{
+  platform{
+    id,
+    name,
+    commands{
+      id,
+      description,
+      commandLine
+    }
+  }
+}
+```
+
+### Get Commands with Platform Name Query
+```graphql
+query {
+  Command {
+    command {
+      commandLine
+      description
+      id
+      platform {
+        name
+      }
+    }
+  }
+}
+```
 
 ## Helpers
 
