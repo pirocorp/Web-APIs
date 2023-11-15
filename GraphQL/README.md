@@ -330,7 +330,7 @@ public class PlatformType : ObjectType<Platform>
 
     private class Resolvers
     {
-        public IQueryable<Command> GetCommands(Platform platform, GraphQlDbContext graphQlDbContext)
+        public IQueryable<Command> GetCommands([Parent]Platform platform, GraphQlDbContext graphQlDbContext)
         {
             return graphQlDbContext.Commands.Where(p => p.Platform.Id == platform.Id);
         }

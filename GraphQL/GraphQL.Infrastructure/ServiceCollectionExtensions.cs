@@ -40,6 +40,7 @@ public static class ServiceCollectionExtensions
                                                                         // to change how the DbContext should be injected.
             .AddQueryType<Query>()
             .AddType<PlatformType>()
+            //.AddType<CommandType>()
             .AddProjections();
 
         return serviceCollection;
