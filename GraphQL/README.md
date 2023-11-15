@@ -2,8 +2,7 @@
 
 ## Endpoints
 
-- GraphQL endpoint: 
-- 
+- GraphQL endpoint: https://localhost:7243/graphql/
 - Schema Visualization: https://localhost:7243/ui/voyager
 
 ## What is GraphQL
@@ -294,7 +293,62 @@ public class Query
      .AddQueryType<Query>();
 ```
 
+### Annotation vs Code First Approaches
+
+Annotation (aka "Pure" Code-first) Approach
+
+- Use 'clean' C# code / pure .NET types
+- Annotate with attributes to provide GraphQL features
+
+Code First
+
+- Introduce dedicated GraphQL schema types
+- Allow us to separate / abstract separate concerns
+
+
 ### Introducing Types
+
+Platform Type
+
+```csharp
+public class PlatformType : ObjectType<Platform>
+{
+    /// <inheritdoc />
+    protected override void Configure(IObjectTypeDescriptor<Platform> descriptor)
+    {
+        descriptor.Description("Represents software or service that has a command line interface.");
+
+        descriptor
+            .Field(p => p.LicenseKey)
+            .Ignore();
+
+        descriptor
+            .Field(p => p.Commands)
+            .ResolveWith<Resolvers>(p => p.GetCommands(default!, default!))
+            .Description("This is the list of available commands for this Platform.");
+    }
+
+    private class Resolvers
+    {
+        public IQueryable<Command> GetCommands(Platform platform, GraphQlDbContext graphQlDbContext)
+        {
+            return graphQlDbContext.Commands.Where(p => p.Platform.Id == platform.Id);
+        }
+    }
+}
+```
+
+Register the Platform Type in the Service Collection
+
+```csharp
+serviceCollection
+    .AddGraphQLServer()
+    .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
+    .AddQueryType<Query>()
+    .AddType<PlatformType>()
+    .AddProjections();
+```
+
 
 ### Filtering and Sorting
 
@@ -368,6 +422,18 @@ query {
     }
   }
 }
+```
+
+## Documentation
+
+Out of the box, Hot Chocolate has the ability to automatically generate API documentation from your existing [XML documentation comments](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc).
+
+Simply Add ```<GenerateDocumentationFile>true</GenerateDocumentationFile>``` to your ```<PropertyGroup>``` in csproj file.
+
+```xml
+<PropertyGroup>
+  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+</PropertyGroup>
 ```
 
 ## Helpers

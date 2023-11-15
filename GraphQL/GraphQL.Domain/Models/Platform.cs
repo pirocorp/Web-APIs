@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 using GraphQL.Domain.Common;
 using GraphQL.Domain.Exceptions;
+
 /// <summary>
 /// Represents any software or service that has a command line interface.
 /// </summary>

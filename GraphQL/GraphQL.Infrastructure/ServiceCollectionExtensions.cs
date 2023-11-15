@@ -1,5 +1,6 @@
 ﻿namespace GraphQL.Infrastructure;
 
+using global::GraphQL.Infrastructure.GraphQL.Platforms;
 using HotChocolate.Data;
 
 using Infrastructure.GraphQL;
@@ -38,6 +39,7 @@ public static class ServiceCollectionExtensions
             .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)  // You can also specify a DbContextKind as argument to the RegisterDbContext<T> method,
                                                                         // to change how the DbContext should be injected.
             .AddQueryType<Query>()
+            .AddType<PlatformType>()
             .AddProjections();
 
         return serviceCollection;
