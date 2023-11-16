@@ -364,6 +364,15 @@ schema{
 ```
 Query and Mutation types are the same as any other GraphQL object type.
 
+```graphql
+type Query {
+ author_details: [Author]
+}
+
+type Mutation {
+ addAuthor(firstName: String, lastName: String): Author
+}
+```
 
 ### Subscriptions
 
