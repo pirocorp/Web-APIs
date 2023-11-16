@@ -28,8 +28,8 @@
  - Mutations
  - Subscriptions
  - Objects
- - Enumerations
- - Scalar
+ - Enumerations - enums are special scalar types that are restricted to a particular set of allowed values.
+ - Scalar - primitive data types
    - Id
    - Int
    - String
@@ -353,6 +353,17 @@ serviceCollection
 ### Filtering and Sorting
 
 ### Mutations
+
+Every GraphQL service has a query type. It may or may not have a mutation type. They act as an entry point into the schema. The **Query** here represents what the client is asking for and the mutation is going to add or delete data from the API.
+
+```graphql
+schema{
+ query: Query
+ mutation: Mutation
+}
+```
+Query and Mutation types are the same as any other GraphQL object type.
+
 
 ### Subscriptions
 
