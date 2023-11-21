@@ -1,5 +1,6 @@
 namespace GraphQL.WebApi;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 using GraphQL.Domain;
@@ -17,10 +18,8 @@ using static Infrastructure.Common.InfrastructureConstants;
 /// <summary>
 /// The application entry Point class
 /// </summary>
-public class Program
+public static class Program
 {
-    private static IConfiguration? configuration;
-
     /// <summary>
     /// The application entry point
     /// </summary>
@@ -42,12 +41,9 @@ public class Program
     /// <summary>
     /// Application Configuration Object
     /// </summary>
-    public static IConfiguration Configuration
-    {
-        get => configuration ?? throw new NullConfigurationException();
-        set => configuration = value ?? throw new NullConfigurationException();
-    }
+    public static IConfiguration Configuration { get; private set; } = default!;
 
+    [MemberNotNull(nameof(Configuration))]
     private static void ConfigureConfiguration(IConfiguration config)
     {
         Configuration = config;
