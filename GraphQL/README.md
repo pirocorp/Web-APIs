@@ -1,10 +1,5 @@
 # Graph QL
 
-## Endpoints
-
-- GraphQL endpoint: https://localhost:7243/graphql/
-- Schema Visualization: https://localhost:7243/ui/voyager
-
 ## What is GraphQL
 
 - GraphQL is a query and manipulation language for APIs
@@ -13,6 +8,8 @@
 - Open Source - hosted by Linux Foundation
 
 ## Core Concepts
+
+**GraphQL** - is a query language for your **API**. **GraphQL** has a strongly typed schema and this schema acts as a **contract** between a **Client** and a **Server**.
 
 **Schema** - describes the API in full
 - The **Queries** you can perform
@@ -23,30 +20,250 @@
 - Comprised of **Types**
 - Must have a **Root Query Type**
 
-**Types** - anything in GraphQL can be a Type
- - Queries
- - Mutations
- - Subscriptions
- - Objects
- - Enumerations - enums are special scalar types that are restricted to a particular set of allowed values.
- - Scalar - primitive data types
-   - Id
-   - Int
-   - String
-   - Boolean
-   - Float
-  
-Schema definition language of GraphQL. Defining an object of type **Car**. Exclamation marks mean it cannot be null
 ```graphql
-type: Car{
-  id: ID!
-  make: String!
-  model: String!
+schema {
+    query: Query
+    mutation: Mutation
 }
 ```
-Resolvers - A resolver returns data for a given field.
+
+**Types** - anything in GraphQL is a Type
+ - **Queries** - the **Query** represents what the **Client** is asking for
+    ```graphql
+    type Query {
+        author_details: [Author]
+    }
+    ```
+ - Mutations - are the state changes of the API
+    ```graphql
+    type Mutation {
+        addAuthor(firstName: String, lastName: String): Author
+    }
+    ```
+ - Subscriptions
+ - Objects - Complex types. The exclamation mark shows that the fields cannot be null
+    ```graphql
+    type Author{
+        id: Id!
+        firstName: String
+        lastName: String 
+        rating: Float
+        numOfCourses: Int
+        courses: [String!]
+    }
+    ```
+ - Enumerations - enums are special scalar types that are restricted to a particular set of allowed values.
+    ```graphql
+    enum language {
+        ENGLISH
+        SPANISH
+        BULGARIAN
+    }
+    ```
+ - Scalar - primitive data types in 
+   - Id
+   - Int
+   - Float
+   - String
+   - Boolean
+ - Resolvers - A resolver returns data for a given field.
 
 ![image](https://github.com/pirocorp/Web-APIs/assets/34960418/182f90ab-365c-4ad7-b987-e017f773441e)
+
+## Quering with GraphQL
+
+### Fields
+
+A GraphQL query is all about asking for specific fields on objects
+
+```graphql
+{
+    viewer {
+        login
+        bio,
+        email
+        id
+        name
+    }
+}
+```
+
+### Arguments
+
+In GraphQL you cna pass arguments to fields. Every field and nested object can get its own set of arguments. This gets rid of multiple API fetches
+
+```graphql
+{
+    viewer {
+        login
+        bio
+        email
+        id
+        name
+        followers (last : 3) {
+            nodes {
+                id
+                bio
+            }
+        }
+    }
+}
+```
+
+### Alias
+
+You can't query for the same field with different arguments. Hence you need aliases. They let you rename the result of a field with anything you want.
+
+```graphql
+{
+    viewer {
+        login
+        bio
+        email
+        id
+        name
+        lastFollowers: followers (last : 3) {
+            nodes {
+                id
+                bio
+            }
+        }
+        firstFollowers: followers (first : 5) {
+            nodes {
+                id
+                bio
+            }
+        }
+    }
+}
+```
+
+### Fragments
+
+Fragments are GraphQL's reusable units. They let you build sets of fields and then include them in multiple queries.
+
+```graphql
+{
+    viewer {
+        login
+        bio
+        email
+        id
+        name
+        lastFollowers: followers (last : 3) {
+            nodes {
+                ...userInfo
+            }
+        }
+        firstFollowers: followers (first : 5) {
+            nodes {
+                ...userInfo
+            }
+        }
+    }
+}
+
+fragment userInfo on User {
+    id
+    bio
+    bioHTML
+    avatarUrl
+}
+```
+
+### Operation Name
+
+A meaningful and explicit name for your operation. Think of it like a function name in a programming language.
+
+```graphql
+query viewerInfo {
+    viewer {
+        login
+        bio
+        email
+        id
+        name
+        lastFollowers: followers (last : 3) {
+            nodes {
+                ...userInfo
+            }
+        }
+        firstFollowers: followers (first : 5) {
+            nodes {
+                ...userInfo
+            }
+        }
+    }
+}
+
+fragment userInfo on User {
+    id
+    bio
+    bioHTML
+    avatarUrl
+}
+```
+
+### Variables
+
+Arguments to fields can be dynamic. GraphQL uses variables to factor dynamic values out of the query and pass them as a separate dictionary.
+
+```graphql
+query viewerInfo($isOwner: Boolean!) {
+    viewer {
+        id
+        name
+        starredRepositories(ownedByViewer: $isOwner, last: 5) {
+            nodes {
+                id,
+                name
+            }
+        }
+    }
+}
+
+{
+    "isOwner": true
+}
+```
+
+
+## Mutations
+
+Mutations are used to make changes to the data (Create, Update, Delete data). GraphQL assumes side-effects after mutations and changes the dataset after a mutation.
+
+While query fields are executed in parallel, mutation fields run in series, one after the other.
+
+```graphql
+mutation NewStatus($input: ChangeUserStatusInput!) {
+    changeUserStatus(input: $input) {
+        clientMutationId
+        status {
+            message
+        }
+    }
+}
+
+query viewerInfo {
+    viewer {
+        login
+        name
+        status {
+            id
+            message
+        }
+    }
+}
+
+{
+    "input": {
+        "clientMutationId": "10101020",
+        "message": "Test Demo"
+    }
+}
+```
+
+
 
 ## GraphQL vs REST
 
@@ -61,14 +278,20 @@ Resolvers - A resolver returns data for a given field.
 | Repeated, simple queries           	| Complex Queries          	|
 | Simple to create                   	| Much harder to create    	|
  
+
+# Demo Application Architecture 
+
+![image](https://github.com/pirocorp/Web-APIs/assets/34960418/abe0508d-21c8-4c86-ba5c-ab51bbbeb7f5)
+
 ## GraphQL with .NET
 
 - GraphQL.NET
 - HotChocolate
 
-## Demo Application Architecture 
+## Endpoints
 
-![image](https://github.com/pirocorp/Web-APIs/assets/34960418/abe0508d-21c8-4c86-ba5c-ab51bbbeb7f5)
+- GraphQL endpoint: https://localhost:7243/graphql/
+- Schema Visualization: https://localhost:7243/ui/voyager
 
 ## Codding
 
@@ -353,26 +576,6 @@ serviceCollection
 ### Filtering and Sorting
 
 ### Mutations
-
-Every GraphQL service has a query type. It may or may not have a mutation type. They act as an entry point into the schema. The **Query** here represents what the client is asking for and the mutation is going to add or delete data from the API.
-
-```graphql
-schema{
- query: Query
- mutation: Mutation
-}
-```
-Query and Mutation types are the same as any other GraphQL object type.
-
-```graphql
-type Query {
- author_details: [Author]
-}
-
-type Mutation {
- addAuthor(firstName: String, lastName: String): Author
-}
-```
 
 ### Subscriptions
 

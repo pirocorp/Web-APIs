@@ -26,6 +26,7 @@ public class PlatformType : ObjectType<Platform>
             .Description("This is the list of available commands for this Platform.");
     }
 
+    // ReSharper disable once ClassNeverInstantiated.Local
     private class Resolvers
     {
         public IQueryable<Command> GetCommands([Parent]Platform platform, GraphQlDbContext graphQlDbContext)
