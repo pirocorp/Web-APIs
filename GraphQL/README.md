@@ -7,6 +7,15 @@
 - Created at Facebook to address both over and under-fetching
 - Open Source - hosted by Linux Foundation
 
+### Benefits of Declarative Data Fetching
+
+- Avoids round-trips to fetch data
+- No more over-fetching or under-fetching of data
+- Your specify exactly the data you need and GraphQL gives you exactly what you asked for
+- GraphQL is a strongly-typed language, and its schema should have types for all objects that it uses
+- The schema serves as a contract between client and server
+- GraphQL offers a lot of flexibility
+
 ## Core Concepts
 
 **GraphQL** - is a query language for your **API**. **GraphQL** has a strongly typed schema and this schema acts as a **contract** between a **Client** and a **Server**.
@@ -66,7 +75,7 @@ schema {
    - Float
    - String
    - Boolean
- - Resolvers - A resolver returns data for a given field.
+ - Resolvers - A resolver function is a function that resolves a value for a type/field in the GraphQL Schema. Resolvers can return Objects, Scalars, Enumerations
 
 ![image](https://github.com/pirocorp/Web-APIs/assets/34960418/182f90ab-365c-4ad7-b987-e017f773441e)
 
@@ -263,8 +272,6 @@ query viewerInfo {
 }
 ```
 
-
-
 ## GraphQL vs REST
 
 - REST over-fetches: returning more data than you need
@@ -277,13 +284,18 @@ query viewerInfo {
 | Simple Object Hierarchy            	| Complex Object Hierarchy 	|
 | Repeated, simple queries           	| Complex Queries          	|
 | Simple to create                   	| Much harder to create    	|
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
  
 
 # Demo Application Architecture 
 
 ![image](https://github.com/pirocorp/Web-APIs/assets/34960418/abe0508d-21c8-4c86-ba5c-ab51bbbeb7f5)
 
-## GraphQL with .NET
+## GraphQL with .NET (GraphQL Execution Engines)
+
+GraphQL Execution Engine is responsible for parsing the query from the client, validation of schema, return of the JSON response. The query is traversed field by field executing resolvers for each field. In the end the execution algorithm puts everything together into the correct shape for the results and returns that. This is where the concept for the batch resolving comes into play.
 
 - GraphQL.NET
 - HotChocolate
