@@ -3,9 +3,9 @@
 using System.Linq;
 
 using Domain.Models;
+using Infrastructure.Data;
 
 using HotChocolate.Data;
-using Infrastructure.Data;
 
 /// <summary>
 /// Graph QL Query Objects

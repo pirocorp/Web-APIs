@@ -317,6 +317,45 @@ Add the following Nuget dependencies:
 - Microsoft.EntityFrameworkCore.SqlServer
 - Microsoft.EntityFrameworkCore.Tools
 
+### Services registration
+
+Register the DbContext as a [Pooled](https://chillicream.com/docs/hotchocolate/v13/integrations/entity-framework) service
+
+```csharp
+ serviceCollection
+     .AddPooledDbContextFactory<GraphQlDbContext>(options => options.UseSqlServer(
+         configuration.GetConnectionString(DEFAULT_CONNECTION),
+         b => b.MigrationsAssembly(typeof(GraphQlDbContext).Assembly.FullName)));
+
+// The Hot Chocolate Resolver Compiler will then take care of correctly injecting your scoped DbContext instance
+// into your resolvers and also ensure that the resolvers using it are never run in parallel.
+
+// You can also specify a DbContextKind as an argument to the RegisterDbContext<T> method,
+// to change how the DbContext should be injected.
+
+// DbContextKind.Pooled
+// This injection mechanism will require your DbContext to be registered as a pooled IDbContextFactory<T>.
+
+// When injecting a DbContext using the DbContextKind.Pool, Hot Chocolate will retrieve one DbContext
+// instance from the pool for each invocation of a resolver. Once the resolver has finished executing,
+// the instance will be returned to the pool.
+```
+
+
+Register the GraphQL dependencies in the Service Collection
+
+```csharp
+serviceCollection
+    .AddGraphQLServer()
+    .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
+    .AddQueryType<Query>()
+    .AddType<PlatformType>()
+    .AddType<CommandType>()
+    .AddProjections();
+```
+
+
+
 ### Domain Model and DbContext
 
 ```csharp
@@ -488,46 +527,6 @@ public class Query
 }
 ```
 
-### Resolver injection of a DbContext ([Pooled](https://chillicream.com/docs/hotchocolate/v13/integrations/entity-framework))
-
-```csharp
-public class Query
-{
-    [UseProjection]
-    public IQueryable<Platform> GetPlatform(GraphQlDbContext context) // Method injection supported by the HotChocolate
-        => context.Platforms;
-
-    [UseProjection]
-    public IQueryable<Command> GetCommand(GraphQlDbContext context)
-        => context.Commands;
-}
-```
-
-```csharp
- serviceCollection
-     .AddPooledDbContextFactory<GraphQlDbContext>(options => options.UseSqlServer(
-         configuration.GetConnectionString(DEFAULT_CONNECTION),
-         b => b.MigrationsAssembly(typeof(GraphQlDbContext).Assembly.FullName)));
-
-// The Hot Chocolate Resolver Compiler will then take care of correctly injecting your scoped DbContext instance
-// into your resolvers and also ensure that the resolvers using it are never run in parallel.
-
-// You can also specify a DbContextKind as an argument to the RegisterDbContext<T> method,
-// to change how the DbContext should be injected.
-
-// DbContextKind.Pooled
-// This injection mechanism will require your DbContext to be registered as a pooled IDbContextFactory<T>.
-
-// When injecting a DbContext using the DbContextKind.Pool, Hot Chocolate will retrieve one DbContext
-// instance from the pool for each invocation of a resolver. Once the resolver has finished executing,
-// the instance will be returned to the pool.
-
- serviceCollection
-     .AddGraphQLServer()
-     .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
-     .AddQueryType<Query>();
-```
-
 ### Annotation vs Code First Approaches
 
 Annotation (aka "Pure" Code-first) Approach
@@ -543,7 +542,22 @@ Code First
 
 ### Introducing Types
 
-Platform Type
+Registering 'Root' query types
+
+```csharp
+public class Query
+{
+    [UseProjection]
+    public IQueryable<Platform> GetPlatform(GraphQlDbContext context) // Method injection supported by the HotChocolate
+        => context.Platforms;
+
+    [UseProjection]
+    public IQueryable<Command> GetCommand(GraphQlDbContext context)
+        => context.Commands;
+}
+```
+
+Platform Type with resolver injection of a ([Pooled](https://chillicream.com/docs/hotchocolate/v13/integrations/entity-framework)) DbContext
 
 ```csharp
 public class PlatformType : ObjectType<Platform>
@@ -572,18 +586,6 @@ public class PlatformType : ObjectType<Platform>
     }
 }
 ```
-
-Register the Platform Type in the Service Collection
-
-```csharp
-serviceCollection
-    .AddGraphQLServer()
-    .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
-    .AddQueryType<Query>()
-    .AddType<PlatformType>()
-    .AddProjections();
-```
-
 
 ### Filtering and Sorting
 

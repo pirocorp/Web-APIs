@@ -3,9 +3,9 @@
 using System.Linq;
 
 using Domain.Models;
-using HotChocolate;
 using Infrastructure.Data;
 
+using HotChocolate;
 using HotChocolate.Types;
 
 /// <inheritdoc />

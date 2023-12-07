@@ -1,10 +1,10 @@
 ﻿namespace GraphQL.Infrastructure;
 
-using global::GraphQL.Infrastructure.GraphQL.Platforms;
-using HotChocolate.Data;
+using Data;
+using GraphQL;
+using GraphQL.Platforms;
 
-using Infrastructure.GraphQL;
-using Infrastructure.Data;
+using HotChocolate.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +40,7 @@ public static class ServiceCollectionExtensions
                                                                         // to change how the DbContext should be injected.
             .AddQueryType<Query>()
             .AddType<PlatformType>()
-            //.AddType<CommandType>()
+            .AddType<CommandType>()
             .AddProjections();
 
         return serviceCollection;
