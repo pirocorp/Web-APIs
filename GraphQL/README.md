@@ -620,6 +620,39 @@ public class CommandType : ObjectType<Command>
 
 ### Filtering and Sorting
 
+Update the Query class
+
+```csharp
+public class Query
+{
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Platform> GetPlatform(GraphQlDbContext context) // Method injection supported by the HotChocolate
+        => context.Platforms;
+
+    [UseProjection]
+    [UseFiltering]
+    [UseSorting]
+    public IQueryable<Command> GetCommand(GraphQlDbContext context)
+        => context.Commands;
+}
+```
+
+Update registration of GraphQL dependencies in the Service Collection
+
+```csharp
+serviceCollection
+    .AddGraphQLServer()
+    .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
+    .AddQueryType<Query>()
+    .AddType<CommandType>()
+    .AddType<PlatformType>()
+    .AddProjections()
+    .AddFiltering()
+    .AddSorting();
+```
+
 ### Mutations
 
 ### Subscriptions
@@ -689,6 +722,31 @@ query {
       }
     }
   }
+}
+```
+
+### Filter Commands by Platform Id Query
+
+```graphql
+query CommandFilterQuery {
+    command(where: { platformId: { eq: "9877F87B-0377-461D-859B-E8FB08D26802" } }) {
+        commandLine
+        description
+        platform {
+            name
+            id
+        }
+    }
+}
+```
+
+### Sorting Platforms Alphabetically Query
+
+```graphql
+query SortingPlatform {
+    platform(order: {name: ASC}) {
+        name
+    }
 }
 ```
 

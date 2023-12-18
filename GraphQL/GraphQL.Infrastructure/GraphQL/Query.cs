@@ -16,6 +16,8 @@ public class Query
     /// Platform Query
     /// </summary>
     [UseProjection]
+    [UseFiltering]
+    [UseSorting]
     public IQueryable<Platform> GetPlatform(GraphQlDbContext context) // Method injection supported by the HotChocolate
         => context.Platforms;
 
@@ -23,6 +25,8 @@ public class Query
     /// Command Query
     /// </summary>
     [UseProjection]
+    [UseFiltering]
+    [UseSorting]
     public IQueryable<Command> GetCommand(GraphQlDbContext context)
         => context.Commands;
 }

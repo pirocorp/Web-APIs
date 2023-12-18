@@ -42,7 +42,9 @@ public static class ServiceCollectionExtensions
             .AddQueryType<Query>()
             .AddType<CommandType>()
             .AddType<PlatformType>()
-            .AddProjections();
+            .AddProjections()
+            .AddFiltering()
+            .AddSorting();
 
         return serviceCollection;
     }
