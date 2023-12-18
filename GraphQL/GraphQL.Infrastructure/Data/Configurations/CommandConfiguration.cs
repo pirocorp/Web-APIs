@@ -9,15 +9,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 public class CommandConfiguration : IEntityTypeConfiguration<Command>
 {
     /// <inheritdoc />
-    public void Configure(EntityTypeBuilder<Command> builder)
+    public void Configure(EntityTypeBuilder<Command> command)
     {
-        builder.HasKey(x => x.Id);
+        command.HasKey(x => x.Id);
 
-        builder
+        command
             .Property(x => x.CommandLine)
             .IsRequired();
 
-        builder
+        command
             .Property(x => x.Description)
             .IsRequired();
     }

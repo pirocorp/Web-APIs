@@ -2,6 +2,7 @@
 
 using Data;
 using GraphQL;
+using GraphQL.Commands;
 using GraphQL.Platforms;
 
 using HotChocolate.Data;
@@ -39,8 +40,8 @@ public static class ServiceCollectionExtensions
             .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)  // You can also specify a DbContextKind as argument to the RegisterDbContext<T> method,
                                                                         // to change how the DbContext should be injected.
             .AddQueryType<Query>()
-            .AddType<PlatformType>()
             .AddType<CommandType>()
+            .AddType<PlatformType>()
             .AddProjections();
 
         return serviceCollection;

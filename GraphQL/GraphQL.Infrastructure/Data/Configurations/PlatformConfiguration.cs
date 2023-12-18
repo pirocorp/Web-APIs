@@ -20,6 +20,7 @@ public class PlatformConfiguration : IEntityTypeConfiguration<Platform>
         platform
             .HasMany(p => p.Commands)
             .WithOne(c => c.Platform)
+            .HasForeignKey(c => c.PlatformId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

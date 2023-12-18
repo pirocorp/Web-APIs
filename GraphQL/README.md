@@ -547,11 +547,9 @@ Registering 'Root' query types
 ```csharp
 public class Query
 {
-    [UseProjection]
     public IQueryable<Platform> GetPlatform(GraphQlDbContext context) // Method injection supported by the HotChocolate
         => context.Platforms;
 
-    [UseProjection]
     public IQueryable<Command> GetCommand(GraphQlDbContext context)
         => context.Commands;
 }
@@ -562,14 +560,18 @@ Platform Type with resolver injection of a ([Pooled](https://chillicream.com/doc
 ```csharp
 public class PlatformType : ObjectType<Platform>
 {
-    /// <inheritdoc />
     protected override void Configure(IObjectTypeDescriptor<Platform> descriptor)
     {
         descriptor.Description("Represents software or service that has a command line interface.");
 
         descriptor
+            .Field(p => p.Id)
+            .IsProjected(); // this field should be always projected (included in the query)
+
+        descriptor
             .Field(p => p.LicenseKey)
-            .Ignore();
+            .Description("Valid license for the platform.")
+            .Ignore(); // The property will not be exposed.
 
         descriptor
             .Field(p => p.Commands)
@@ -587,6 +589,35 @@ public class PlatformType : ObjectType<Platform>
 }
 ```
 
+Command Type with resolver injection of a ([Pooled](https://chillicream.com/docs/hotchocolate/v13/integrations/entity-framework)) DbContext
+
+```csharp
+public class CommandType : ObjectType<Command>
+{
+    protected override void Configure(IObjectTypeDescriptor<Command> descriptor)
+    {
+        descriptor.Description("Represents any executable command.");
+
+        descriptor
+            .Field(c => c.PlatformId)
+            .IsProjected(); // this field should be always projected (included in the query)
+
+        descriptor
+            .Field(c => c.Platform)
+            .ResolveWith<Resolvers>(c => c.GetPlatform(default!, default!))
+            .Description("This is the platform on which command can be executed.");
+    }
+
+    private class Resolvers
+    {
+        public Platform? GetPlatform([Parent] Command command, GraphQlDbContext graphQlDbContext)
+        {
+            return graphQlDbContext.Platforms.FirstOrDefault(p => p.Id == command.PlatformId);
+        }
+    }
+}
+```
+
 ### Filtering and Sorting
 
 ### Mutations
@@ -597,7 +628,7 @@ public class PlatformType : ObjectType<Platform>
 
 ## Wrap Up
 
-## Queries
+## Quering the API
 
 ### Get Platforms Query
 

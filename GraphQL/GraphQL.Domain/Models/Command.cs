@@ -19,13 +19,13 @@ public class Command : Entity<Guid>
 
     internal Command(string description, string commandLine, Platform platform)
     {
-        this.Id = Guid.NewGuid();
-
         Validate(description, commandLine);
 
+        this.Id = Guid.NewGuid();
         this.Description = description;
         this.CommandLine = commandLine;
         this.Platform = platform;
+        this.PlatformId = platform.Id;
     }
 
     /// <summary>
@@ -37,6 +37,11 @@ public class Command : Entity<Guid>
     /// Description of the command
     /// </summary>
     public string Description { get; private set; }
+
+    /// <summary>
+    /// Id of the Platform
+    /// </summary>
+    public Guid PlatformId { get; private set; }
 
     /// <summary>
     /// Platform on which command can be executed
