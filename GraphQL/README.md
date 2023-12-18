@@ -9,16 +9,16 @@
 
 ### Benefits of Declarative Data Fetching
 
-- Avoids round-trips to fetch data
+- Avoids round trips to fetch data
 - No more over-fetching or under-fetching of data
-- Your specify exactly the data you need and GraphQL gives you exactly what you asked for
-- GraphQL is a strongly-typed language, and its schema should have types for all objects that it uses
-- The schema serves as a contract between client and server
+- You specify exactly the data you need, and GraphQL gives you exactly what you asked for
+- GraphQL is a strongly typed language, and its schema should have types for all objects that it uses
+- The schema serves as a contract between the client and the server
 - GraphQL offers a lot of flexibility
 
 ## Core Concepts
 
-**GraphQL** - is a query language for your **API**. **GraphQL** has a strongly typed schema and this schema acts as a **contract** between a **Client** and a **Server**.
+**GraphQL** - is a query language for your **API**. **GraphQL** has a strongly typed schema, and this schema acts as a **contract** between a **Client** and a **Server**.
 
 **Schema** - describes the API in full
 - The **Queries** you can perform
@@ -83,7 +83,7 @@ schema {
 
 ### Fields
 
-A GraphQL query is all about asking for specific fields on objects
+A GraphQL query is all about asking for specific fields on objects.
 
 ```graphql
 {
@@ -99,7 +99,7 @@ A GraphQL query is all about asking for specific fields on objects
 
 ### Arguments
 
-In GraphQL you cna pass arguments to fields. Every field and nested object can get its own set of arguments. This gets rid of multiple API fetches
+In GraphQL, you can pass arguments to fields. Every field and nested object can get its own set of arguments. This gets rid of multiple API fetches.
 
 ```graphql
 {
@@ -121,7 +121,7 @@ In GraphQL you cna pass arguments to fields. Every field and nested object can g
 
 ### Alias
 
-You can't query for the same field with different arguments. Hence you need aliases. They let you rename the result of a field with anything you want.
+You can't query for the same field with different arguments. Hence, you need aliases. They let you rename the result of a field with anything you want.
 
 ```graphql
 {
@@ -239,7 +239,7 @@ query viewerInfo($isOwner: Boolean!) {
 
 ## Mutations
 
-Mutations are used to make changes to the data (Create, Update, Delete data). GraphQL assumes side-effects after mutations and changes the dataset after a mutation.
+Mutations are used to make changes to the data (Create, Update, Delete data). GraphQL assumes side effects after mutations and changes the dataset after a mutation.
 
 While query fields are executed in parallel, mutation fields run in series, one after the other.
 
@@ -295,7 +295,7 @@ query viewerInfo {
 
 ## GraphQL with .NET (GraphQL Execution Engines)
 
-GraphQL Execution Engine is responsible for parsing the query from the client, validation of schema, return of the JSON response. The query is traversed field by field executing resolvers for each field. In the end the execution algorithm puts everything together into the correct shape for the results and returns that. This is where the concept for the batch resolving comes into play.
+GraphQL Execution Engine is responsible for parsing the client's query, validating schema, and returning the JSON response. The query is traversed field by field, executing resolvers for each field. In the end, the execution algorithm puts everything together into the correct shape for the results and returns that. This is where the concept of batch resolving comes into play.
 
 - GraphQL.NET
 - HotChocolate
@@ -341,8 +341,7 @@ Register the DbContext as a [Pooled](https://chillicream.com/docs/hotchocolate/v
 // the instance will be returned to the pool.
 ```
 
-
-Register the GraphQL dependencies in the Service Collection
+Register the GraphQL dependencies in the Service Collection.
 
 ```csharp
 serviceCollection
@@ -527,7 +526,7 @@ public class Query
 }
 ```
 
-### Annotation vs Code First Approaches
+### Annotation vs. Code First Approaches
 
 Annotation (aka "Pure" Code-first) Approach
 
@@ -694,7 +693,7 @@ serviceCollection
 
 #### Add Command Mutation
 
-In Mutations class create ```AddCommandAsync``` method.
+In the Mutations class, create ```AddCommandAsync``` method.
 
 ```csharp
 public async Task<AddCommandPayload> AddCommandAsync(
@@ -722,7 +721,7 @@ public async Task<AddCommandPayload> AddCommandAsync(
 
 [Subscriptions](https://www.howtographql.com/graphql-js/7-subscriptions/#:~:text=What%20are%20GraphQL%20subscriptions%3F,connection%20to%20its%20subscribed%20client.) are a GraphQL feature that allows a server to send data to its clients when a specific event happens. Subscriptions are usually implemented with WebSockets. In that setup, the server maintains a steady connection to its subscribed client.
 
-[WebSocket](https://en.wikipedia.org/wiki/WebSocket) is a computer communications protocol, providing simultaneous two-way communication channels over a single Transmission Control Protocol (TCP) connection. 
+[WebSocket](https://en.wikipedia.org/wiki/WebSocket) is a computer communications protocol providing simultaneous two-way communication channels over a single Transmission Control Protocol (TCP) connection. 
 
 Create Subscription class
 
@@ -745,7 +744,7 @@ private static void ConfigureMiddleware(WebApplication app)
 }
 ```
 
-Register GraphQL Subscriptions in Service Collection
+Register GraphQL Subscriptions in the Service Collection
 
 ```csharp
 serviceCollection
@@ -796,7 +795,7 @@ query{
 }
 ```
 
-### Get Platforms Paralel Query
+### Get Platforms Parallel Query
 
 ```graphql
 query{
@@ -847,7 +846,7 @@ query {
 }
 ```
 
-### Filter Commands by Platform Id Query
+### Filter Commands by Platform ID Query
 
 ```graphql
 query CommandFilterQuery {
@@ -891,7 +890,7 @@ mutation AddPlatform {
 mutation AddCommand {
     addCommand(
         input: {
-            description: "Perform directory listing"
+            description: "Perform directory listing."
             commandLine: "ls"
             platformId: "69C7BCB8-E4A3-4164-96A5-37D9946AEE84"
         }
@@ -911,7 +910,7 @@ mutation AddCommand {
 
 ### Subscription
 
-Subscribe for the On Platform Added event with Postman and execute Add Platform Mutation
+Subscribe for the On Platform Added event with Postman and execute Add Platform Mutation.
 
 ```graphql
 subscription OnPlatformAdded {
@@ -939,7 +938,7 @@ Simply Add ```<GenerateDocumentationFile>true</GenerateDocumentationFile>``` to 
 
 ## Helpers
 
-While in `GraphQL.Infrastructure` project use this type of command to work with migrations
+While in `GraphQL.Infrastructure` project, use this type of command to work with migrations
 
 ```bash
 dotnet ef --startup-project ..\GraphQL.WebApi\ migrations list
