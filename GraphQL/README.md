@@ -923,12 +923,11 @@ subscription OnPlatformAdded {
 ```
 The result should be similar to:
 
-
-
+![image](https://github.com/pirocorp/Web-APIs/assets/34960418/02c30742-95f9-40ab-a497-d07dd0becbd1)
 
 ## Documentation
 
-Out of the box, Hot Chocolate has the ability to automatically generate API documentation from your existing [XML documentation comments](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc).
+Out of the box, Hot Chocolate can automatically generate API documentation from your existing [XML documentation comments](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc).
 
 Simply Add ```<GenerateDocumentationFile>true</GenerateDocumentationFile>``` to your ```<PropertyGroup>``` in csproj file.
 
@@ -948,6 +947,6 @@ dotnet ef --startup-project ..\GraphQL.WebApi\ migrations list
 
 ## Next Steps
 
-TODO: Add Update and Delete Mutations
+TODO: Add Update, and Delete Mutations
 
 ## Wrap Up
