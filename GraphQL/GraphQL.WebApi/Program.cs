@@ -56,7 +56,9 @@ public static class Program
     }
 
     private static void ConfigureMiddleware(WebApplication app)
-    { }
+    {
+        app.UseWebSockets();
+    }
 
     private static void ConfigureEndpoints(IEndpointRouteBuilder app)
     {

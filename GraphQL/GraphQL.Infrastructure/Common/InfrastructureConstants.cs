@@ -19,4 +19,9 @@ public static class InfrastructureConstants
     /// The endpoint of the Graph QL Scheme Visualizer 
     /// </summary>
     public const string VOYAGER_ENDPOINT = "ui/voyager";
+
+    /// <summary>
+    /// Platform added topic name
+    /// </summary>
+    public const string PLATFORM_ADDED_TOPIC = "PlatformAdded";
 }

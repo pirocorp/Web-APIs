@@ -718,8 +718,70 @@ public async Task<AddCommandPayload> AddCommandAsync(
 }
 ```
 
-
 ### Subscriptions
+
+[Subscriptions](https://www.howtographql.com/graphql-js/7-subscriptions/#:~:text=What%20are%20GraphQL%20subscriptions%3F,connection%20to%20its%20subscribed%20client.) are a GraphQL feature that allows a server to send data to its clients when a specific event happens. Subscriptions are usually implemented with WebSockets. In that setup, the server maintains a steady connection to its subscribed client.
+
+[WebSocket](https://en.wikipedia.org/wiki/WebSocket) is a computer communications protocol, providing simultaneous two-way communication channels over a single Transmission Control Protocol (TCP) connection. 
+
+Create Subscription class
+
+```csharp
+public class Subscription
+{
+    [Subscribe]
+    [Topic(PLATFORM_ADDED_TOPIC)]
+    public Platform OnPlatformAdded([EventMessage] Platform platform)
+        => platform;
+}
+```
+
+In ```ConfigureMiddleware``` method in the ```Program.cs``` file add WebSockets middleware
+
+```
+private static void ConfigureMiddleware(WebApplication app)
+{
+    app.UseWebSockets();
+}
+```
+
+Register GraphQL Subscriptions in Service Collection
+
+```csharp
+serviceCollection
+    .AddGraphQLServer()
+    .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
+    .AddQueryType<Query>()
+    .AddMutationType<Mutations>()
+    .AddSubscriptionType<Subscriptions>()
+    .AddType<CommandType>()
+    .AddType<PlatformType>()
+    .AddProjections()
+    .AddFiltering()
+    .AddSorting()
+    .AddInMemorySubscriptions();
+```
+
+Publishing Events. In Mutations update ```AddPlatformAsync``` method
+
+```csharp
+    public async Task<AddPlatformPayload> AddPlatformAsync(
+        AddPlatformInput input, 
+        GraphQlDbContext dbContext,
+        [FromServices] IPlatformFactory platformFactory,
+        [Service] ITopicEventSender eventSender,
+        CancellationToken cancellationToken)
+    {
+        Platform platform = platformFactory.WithName(input.Name).Build();
+
+        await dbContext.AddAsync(platform, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        await eventSender.SendAsync(PLATFORM_ADDED_TOPIC, platform, cancellationToken);
+
+        return new AddPlatformPayload(platform);
+    }
+```
 
 ## Quering and Mutating the API
 
@@ -846,6 +908,23 @@ mutation AddCommand {
     }
 }
 ```
+
+### Subscription
+
+Subscribe for the On Platform Added event with Postman and execute Add Platform Mutation
+
+```graphql
+subscription OnPlatformAdded {
+    onPlatformAdded {
+        id
+        name
+    }
+}
+```
+The result should be similar to:
+
+
+
 
 ## Documentation
 

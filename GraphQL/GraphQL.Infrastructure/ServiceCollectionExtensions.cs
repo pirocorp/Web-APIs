@@ -41,11 +41,15 @@ public static class ServiceCollectionExtensions
                                                                         // to change how the DbContext should be injected.
             .AddQueryType<Query>()
             .AddMutationType<Mutations>()
+            .AddSubscriptionType<Subscriptions>()
             .AddType<CommandType>()
             .AddType<PlatformType>()
             .AddProjections()
             .AddFiltering()
-            .AddSorting();
+            .AddSorting()
+            // To make pub/sub work, we also have to register a subscription provider.
+            // A subscription provider represents a pub/sub implementation used to handle events.
+            .AddInMemorySubscriptions(); //The In-Memory subscription provider does not need any configuration and is easily setup.
 
         return serviceCollection;
     }
