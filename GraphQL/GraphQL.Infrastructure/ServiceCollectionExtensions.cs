@@ -40,6 +40,7 @@ public static class ServiceCollectionExtensions
             .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)  // You can also specify a DbContextKind as argument to the RegisterDbContext<T> method,
                                                                         // to change how the DbContext should be injected.
             .AddQueryType<Query>()
+            .AddMutationType<Mutations>()
             .AddType<CommandType>()
             .AddType<PlatformType>()
             .AddProjections()

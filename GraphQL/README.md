@@ -655,13 +655,73 @@ serviceCollection
 
 ### Mutations
 
+#### Add Platform Mutation
+
+Create Mutations class and in it create ```AddPlatformAsync``` method.
+
+```csharp
+public class Mutations
+{
+    public async Task<AddPlatformPayload> AddPlatformAsync(
+        AddPlatformInput input, 
+        GraphQlDbContext dbContext,
+        IPlatformFactory platformFactory)
+    {
+        Platform platform = platformFactory.WithName(input.Name).Build();
+
+        await dbContext.AddAsync(platform);
+        await dbContext.SaveChangesAsync();
+
+        return new AddPlatformPayload(platform);
+    }
+}
+```
+
+Register GraphQL mutations in Service Collection
+
+```csharp
+serviceCollection
+    .AddGraphQLServer()
+    .RegisterDbContext<GraphQlDbContext>(DbContextKind.Pooled)
+    .AddQueryType<Query>()
+    .AddMutationType<Mutations>()
+    .AddType<CommandType>()
+    .AddType<PlatformType>()
+    .AddProjections()
+    .AddFiltering()
+    .AddSorting();
+```
+
+#### Add Command Mutation
+
+In Mutations class create ```AddCommandAsync``` method.
+
+```csharp
+public async Task<AddCommandPayload> AddCommandAsync(
+    AddCommandInput input, 
+    GraphQlDbContext dbContext,
+    [FromServices] ICommandFactory commandFactory)
+{
+    Platform platform = dbContext.Platforms
+        .Single(p => p.Id == input.PlatformId);
+
+    Command command = commandFactory
+        .WithCommandLine(input.CommandLine)
+        .WithDescription(input.Description)
+        .WithPlatform(platform)
+        .Build();
+
+    await dbContext.AddAsync(command);
+    await dbContext.SaveChangesAsync();
+
+    return new AddCommandPayload(command);
+}
+```
+
+
 ### Subscriptions
 
-## Next Steps
-
-## Wrap Up
-
-## Quering the API
+## Quering and Mutating the API
 
 ### Get Platforms Query
 
@@ -750,6 +810,43 @@ query SortingPlatform {
 }
 ```
 
+### Add Platform Mutation 
+
+```graphql
+mutation AddPlatform {
+    addPlatform(input: { name: "Azure" }) {
+        platform {
+            id
+            name
+        }
+    }
+}
+```
+
+### Add Command Mutation 
+
+```graphql
+mutation AddCommand {
+    addCommand(
+        input: {
+            description: "Perform directory listing"
+            commandLine: "ls"
+            platformId: "69C7BCB8-E4A3-4164-96A5-37D9946AEE84"
+        }
+    ) {
+        command {
+            id
+            description
+            commandLine
+            platform {
+                name
+            }
+            platformId
+        }
+    }
+}
+```
+
 ## Documentation
 
 Out of the box, Hot Chocolate has the ability to automatically generate API documentation from your existing [XML documentation comments](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc).
@@ -769,3 +866,9 @@ While in `GraphQL.Infrastructure` project use this type of command to work with 
 ```bash
 dotnet ef --startup-project ..\GraphQL.WebApi\ migrations list
 ```
+
+## Next Steps
+
+TODO: Add Update and Delete Mutations
+
+## Wrap Up

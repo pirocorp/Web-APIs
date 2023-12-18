@@ -16,7 +16,7 @@ public class CommandFactory : ICommandFactory
     /// </summary>
     /// <returns>New <see cref="Command"/> instance</returns>
     public Command Build()
-        => this.Build(this.commandDescription, this.commandExpression, this.commandPlatform);
+        => new (this.commandDescription, this.commandExpression, this.commandPlatform);
 
     /// <inheritdoc />
     public Command Build(string description, string commandLine, Platform platform)
